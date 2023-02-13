@@ -5,6 +5,7 @@ import 'hardhat-typechain'
 import 'hardhat-watcher'
 
 require('dotenv').config()
+require('@openzeppelin/hardhat-upgrades')
 
 const LOW_OPTIMIZER_COMPILER_SETTINGS = {
   version: '0.8.15',
@@ -78,6 +79,14 @@ export default {
     optimism: {
       url: `https://optimism-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
     },
+    polygon: {
+      url: 'https://polygon-rpc.com',
+      chainId: 137,
+      // gasLimit: "",
+      accounts: {
+        mnemonic: process.env.MAINNET_DEPLOYER_KEY,
+      },
+    },
     bscTestnet: {
       url: 'https://data-seed-prebsc-1-s3.binance.org:8545',
       chainId: 97,
@@ -92,6 +101,7 @@ export default {
     apiKey: {
       mainnet: process.env.ETHERSCAN_API_KEY,
       bscTestnet: process.env.BSCSCAN_API_KEY,
+      polygon: process.env.POLYGONSCAN_API_KEY,
     },
   },
   solidity: {
