@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat'
+const { ethers, upgrades } = require('hardhat')
 import hre from 'hardhat'
 import getNetworkConfig from '../deploy-config'
 
@@ -8,7 +8,7 @@ import getNetworkConfig from '../deploy-config'
  * its own task in ../tasks/ organized by date.
  */
 async function main() {
-  let { factory, WNATIVE, nftdescriptor } = getNetworkConfig(hre.network.name)
+  let { factory, WNATIVE, nftdescriptor, nativeCurrencyLabelBytes, proxyAdmin } = getNetworkConfig(hre.network.name)
 
   const NFTDescriptor = await ethers.getContractFactory('NFTDescriptor')
   let actualNFTdescriptor
@@ -23,11 +23,24 @@ async function main() {
       NFTDescriptor: actualNFTdescriptor.address,
     },
   })
-  const PosManager = await ethers.getContractFactory('NonfungiblePositionManager')
 
-  console.log(actualNFTdescriptor.address)
-  const posDescriptor = await PosDescriptor.deploy(WNATIVE, '0x0000000000000000000000000000000000000000000000000000000000000000')
+  const TransparentUpgradeableProxy = await ethers.getContractFactory('TransparentUpgradeableProxy')
+
+  console.log('NFTdescriptor deployed at', actualNFTdescriptor.address)
+  const posDescriptor = await PosDescriptor.deploy(WNATIVE, nativeCurrencyLabelBytes)
+  await posDescriptor.deployed()
+  console.log('Descriptor deployed at: ', posDescriptor.address)
+
+  const proxy = await TransparentUpgradeableProxy.deploy(
+    posDescriptor.address,
+    proxyAdmin,
+    '0x'
+  )
+  await proxy.deployed()
+
+  const PosManager = await ethers.getContractFactory('NonfungiblePositionManager')
   const posManager = await PosManager.deploy(factory, WNATIVE, posDescriptor.address)
+  console.log('proxy deployed at: ', proxy.address)
   console.log('Manager deployed at: ', posManager.address)
 }
 

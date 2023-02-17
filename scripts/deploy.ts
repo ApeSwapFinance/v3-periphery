@@ -13,6 +13,8 @@ async function main() {
   const Router = await ethers.getContractFactory('SwapRouter')
   const router = await Router.deploy(factory, WNATIVE)
   console.log('Router deployed at: ', router.address)
+  console.log('npx hardhat verify --network', hre.network.name, router.address, factory, WNATIVE)
+  
 
   // uint160 sqrtRatioX96,
   // uint160 sqrtRatioAX96,

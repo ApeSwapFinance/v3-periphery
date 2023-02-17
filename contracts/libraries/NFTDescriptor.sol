@@ -495,7 +495,7 @@ library NFTDescriptor {
     function scale(
         uint256 n,
         uint256 inMn,
-        uint256 inMx,
+        uint256 inMx,  
         uint256 outMn,
         uint256 outMx
     ) private pure returns (string memory) {

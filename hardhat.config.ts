@@ -82,7 +82,6 @@ export default {
     polygon: {
       url: 'https://polygon-rpc.com',
       chainId: 137,
-      // gasLimit: "",
       accounts: {
         mnemonic: process.env.MAINNET_DEPLOYER_KEY,
       },

@@ -3,7 +3,10 @@ function getNetworkConfig(network: any) {
     console.log(`Deploying with BSC MAINNET config.`)
     return {
       factory: '',
-      WETH: '',
+      WNATIVE: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+      nftdescriptor: '',
+      nativeCurrencyLabelBytes: '0x424e420000000000000000000000000000000000000000000000000000000000',
+      proxyAdmin: '0x1B7722871c06Acc4cfB13e7A7503eA3DEaE78Ec8',
     }
   } else if (['bscTestnet', 'bsc-testnet-fork'].includes(network)) {
     console.log(`Deploying with BSC testnet config.`)
@@ -20,6 +23,7 @@ function getNetworkConfig(network: any) {
       WNATIVE: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
       nftdescriptor: '0x36520bBd502d70aF871F52Dc69b17Aa6996AC874',
       nativeCurrencyLabelBytes: '0x4D41544943000000000000000000000000000000000000000000000000000000',
+      proxyAdmin: '0x5c7C7246bD8a18DF5f6Ee422f9F8CCDF716A6aD2',
     }
   } else if (['development'].includes(network)) {
     console.log(`Deploying with development config.`)
@@ -27,6 +31,6 @@ function getNetworkConfig(network: any) {
   } else {
     throw new Error(`No config found for network ${network}.`)
   }
-}
+} 
 
 export default getNetworkConfig
