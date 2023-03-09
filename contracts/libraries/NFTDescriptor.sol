@@ -63,7 +63,9 @@ library NFTDescriptor {
                                 '", "description":"',
                                 descriptionPartOne,
                                 descriptionPartTwo,
-                                '", "image": "',
+                                '", "attributes": ',
+                                generateAllAttributes(params),
+                                ', "image": "',
                                 'data:image/svg+xml;base64,',
                                 image,
                                 '"}'
@@ -72,6 +74,37 @@ library NFTDescriptor {
                     )
                 )
             );
+    }
+
+    function generateAllAttributes(ConstructTokenURIParams memory params) internal pure returns (string memory) {
+        return
+            string(
+                abi.encodePacked(
+                    '[',
+                    generateAttributeQuoted('Quote Token Address', addressToString(params.quoteTokenAddress)),
+                    ',',
+                    generateAttributeQuoted('Base Token Address', addressToString(params.baseTokenAddress)),
+                    ',',
+                    generateAttributeQuoted('Pool Address', addressToString(params.poolAddress)),
+                    ',',
+                    generateAttribute('Fee', Strings.toString(params.fee)),
+                    ',',
+                    generateAttribute('Lower Tick', NFTSVG.tickToString(params.tickLower)),
+                    ',',
+                    generateAttribute('Upper Tick', NFTSVG.tickToString(params.tickUpper)),
+                    ',',
+                    generateAttribute('Rare', NFTSVG.isRare(params.tokenId, params.poolAddress) ? 'true' : 'false'),
+                    ']'
+                )
+            );
+    }
+
+    function generateAttributeQuoted(string memory trait, string memory value) internal pure returns (string memory) {
+        return string(abi.encodePacked('{"trait_type":"', trait, '","value":"', value, '"}'));
+    }
+
+    function generateAttribute(string memory trait, string memory value) internal pure returns (string memory) {
+        return string(abi.encodePacked('{"trait_type":"', trait, '","value":', value, '}'));
     }
 
     function escapeQuotes(string memory symbol) internal pure returns (string memory) {
@@ -104,7 +137,7 @@ library NFTDescriptor {
         return
             string(
                 abi.encodePacked(
-                    'This NFT represents a liquidity position in a Uniswap V3 ',
+                    'This NFT represents a liquidity position in a ApeSwap V3 ',
                     quoteTokenSymbol,
                     '-',
                     baseTokenSymbol,
@@ -152,7 +185,7 @@ library NFTDescriptor {
         return
             string(
                 abi.encodePacked(
-                    'Uniswap - ',
+                    'ApeSwap - ',
                     feeTier,
                     ' - ',
                     escapeQuotes(params.quoteTokenSymbol),
@@ -407,10 +440,11 @@ library NFTDescriptor {
         return HexStrings.toHexString(uint256(uint160(addr)), 20);
     }
 
-    function generateSVGImage(ConstructTokenURIParams memory params) internal pure returns (string memory svg) {
+    function generateSVGImage(ConstructTokenURIParams memory params) public pure returns (string memory svg) {
+        int8 overRangeValue = overRange(params.tickLower, params.tickUpper, params.tickCurrent);
+
         string memory defs = NFTSVG.generateSVGDefs(
             NFTSVG.SVGDefsParams({
-                color0: tokenToColorHex(uint256(uint160(params.quoteTokenAddress)), 136),
                 color1: tokenToColorHex(uint256(uint160(params.baseTokenAddress)), 136),
                 color2: tokenToColorHex(uint256(uint160(params.quoteTokenAddress)), 0),
                 color3: tokenToColorHex(uint256(uint160(params.baseTokenAddress)), 0),
@@ -418,44 +452,45 @@ library NFTDescriptor {
                     getCircleCoord(uint256(uint160(params.quoteTokenAddress)), 16, params.tokenId),
                     0,
                     255,
-                    16,
-                    274
+                    50,
+                    222
                 ),
                 y1: scale(
                     getCircleCoord(uint256(uint160(params.baseTokenAddress)), 16, params.tokenId),
                     0,
                     255,
-                    100,
-                    484
+                    50,
+                    312
                 ),
                 x2: scale(
                     getCircleCoord(uint256(uint160(params.quoteTokenAddress)), 32, params.tokenId),
                     0,
                     255,
-                    16,
-                    274
+                    50,
+                    222
                 ),
                 y2: scale(
                     getCircleCoord(uint256(uint160(params.baseTokenAddress)), 32, params.tokenId),
                     0,
                     255,
-                    100,
-                    484
+                    50,
+                    312
                 ),
                 x3: scale(
                     getCircleCoord(uint256(uint160(params.quoteTokenAddress)), 48, params.tokenId),
                     0,
                     255,
-                    16,
-                    274
+                    50,
+                    222
                 ),
                 y3: scale(
                     getCircleCoord(uint256(uint160(params.baseTokenAddress)), 48, params.tokenId),
                     0,
                     255,
-                    100,
-                    484
-                )
+                    50,
+                    312
+                ),
+                overRange: overRangeValue
             })
         );
 
@@ -470,7 +505,7 @@ library NFTDescriptor {
                 tickLower: params.tickLower,
                 tickUpper: params.tickUpper,
                 tickSpacing: params.tickSpacing,
-                overRange: overRange(params.tickLower, params.tickUpper, params.tickCurrent),
+                overRange: overRangeValue,
                 tokenId: params.tokenId
             })
         );
@@ -495,7 +530,7 @@ library NFTDescriptor {
     function scale(
         uint256 n,
         uint256 inMn,
-        uint256 inMx,  
+        uint256 inMx,
         uint256 outMn,
         uint256 outMx
     ) private pure returns (string memory) {

@@ -6,6 +6,7 @@ import 'hardhat-watcher'
 
 require('dotenv').config()
 require('@openzeppelin/hardhat-upgrades')
+require('hardhat-contract-sizer')
 
 const LOW_OPTIMIZER_COMPILER_SETTINGS = {
   version: '0.8.15',
@@ -26,7 +27,7 @@ const LOWEST_OPTIMIZER_COMPILER_SETTINGS = {
     viaIR: true,
     optimizer: {
       enabled: true,
-      runs: 1_000,
+      runs: 500,
     },
     metadata: {
       bytecodeHash: 'none',
@@ -87,11 +88,12 @@ export default {
       },
     },
     bscTestnet: {
-      url: 'https://data-seed-prebsc-1-s3.binance.org:8545',
+      url: 'https://data-seed-prebsc-1-s2.binance.org:8545',
       chainId: 97,
       accounts: {
         mnemonic: process.env.TESTNET_DEPLOYER_KEY,
       },
+      allowUnlimitedContractSize: true,
     },
   },
   etherscan: {
@@ -112,6 +114,7 @@ export default {
       'contracts/NonfungibleTokenPositionDescriptor.sol': LOWEST_OPTIMIZER_COMPILER_SETTINGS,
       'contracts/libraries/NFTDescriptor.sol': LOWEST_OPTIMIZER_COMPILER_SETTINGS,
       'contracts/libraries/NFTSVG.sol': LOWEST_OPTIMIZER_COMPILER_SETTINGS,
+      'contracts/NFTDesignTest.sol': LOWEST_OPTIMIZER_COMPILER_SETTINGS,
     },
   },
   watcher: {
