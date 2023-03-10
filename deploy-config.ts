@@ -14,7 +14,7 @@ function getNetworkConfig(network: any) {
   } else if (['bscTestnet', 'bsc-testnet-fork'].includes(network)) {
     console.log(`Deploying with BSC testnet config.`)
     return {
-      factory: '0xc6AAeE93771e6E35f6A973b0019448C3581f665e',
+      factory: '0x13f321ABC34b9BD13a6Db1b1CfA6bfd0f78b3909',
       WNATIVE: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
       nativeCurrencyLabelBytes: '0x424E420000000000000000000000000000000000000000000000000000000000',
       proxyAdmin: '0x5c7C7246bD8a18DF5f6Ee422f9F8CCDF716A6aD2',
