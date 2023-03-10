@@ -1,26 +1,26 @@
 {
-  "name": "@uniswap/v3-periphery",
-  "description": "🎚 Peripheral smart contracts for interacting with Uniswap V3",
-  "license": "GPL-2.0-or-later",
+  "name": "@ape.swap/v3-periphery",
+  "description": "Peripheral smart contracts for interacting with ApeSwap V3",
+  "license": "ISC",
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.4.3",
-  "homepage": "https://uniswap.org",
+  "version": "0.0.5",
+  "homepage": "https://apeswap.finance",
   "keywords": [
-    "uniswap",
+    "apeswap",
     "periphery",
     "v3"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Uniswap/uniswap-v3-periphery"
+    "url": "https://github.com/ApeSwapFinance/v3-periphery"
   },
   "files": [
     "contracts/base",
     "contracts/interfaces",
     "contracts/libraries",
-    "artifacts/contracts/**/*.json",
+    "artifacts/contracts/se**/*.json",
     "!artifacts/contracts/**/*.dbg.json",
     "!artifacts/contracts/test/**/*",
     "!artifacts/contracts/base/**/*"
