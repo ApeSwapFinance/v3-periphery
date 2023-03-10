@@ -2,10 +2,10 @@ function getNetworkConfig(network: any) {
   if (['bsc', 'bsc-fork'].includes(network)) {
     console.log(`Deploying with BSC MAINNET config.`)
     return {
-      factory: '',
+      factory: '0x5a6511F7CD85e5bCaad3D72B0ed22AF163363A63',
       WNATIVE: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
       nativeCurrencyLabelBytes: '0x424E420000000000000000000000000000000000000000000000000000000000',
-      proxyAdmin: '0x1B7722871c06Acc4cfB13e7A7503eA3DEaE78Ec8',
+      proxyAdmin: '0x5c7C7246bD8a18DF5f6Ee422f9F8CCDF716A6aD2',
       //Optional
       nftdescriptor: '',
       nftSVG: '',

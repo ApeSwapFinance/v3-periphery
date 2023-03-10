@@ -87,6 +87,13 @@ export default {
         mnemonic: process.env.MAINNET_DEPLOYER_KEY,
       },
     },
+    bsc: {
+      url: 'https://bscrpc.com',
+      chainId: 56,
+      accounts: {
+        mnemonic: process.env.MAINNET_DEPLOYER_KEY,
+      },
+    },
     bscTestnet: {
       url: 'https://data-seed-prebsc-1-s2.binance.org:8545',
       chainId: 97,
@@ -101,6 +108,7 @@ export default {
     // Obtain one at https://etherscan.io/
     apiKey: {
       mainnet: process.env.ETHERSCAN_API_KEY,
+      bsc: process.env.BSCSCAN_API_KEY,
       bscTestnet: process.env.BSCSCAN_API_KEY,
       polygon: process.env.POLYGONSCAN_API_KEY,
     },

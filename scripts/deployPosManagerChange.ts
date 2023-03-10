@@ -14,8 +14,8 @@ async function main() {
 
   //force deploy new because it needs update
   const NFTSVG = await ethers.getContractFactory('NFTSVG')
-  // let actualNFTSVG = await NFTSVG.deploy()
-  let actualNFTSVG = await NFTSVG.attach(nftSVG)
+  let actualNFTSVG = await NFTSVG.deploy()
+  await actualNFTSVG.deployed()
   console.log('NFTSVG deployed at', actualNFTSVG.address)
 
   const NFTDescriptor = await ethers.getContractFactory('NFTDescriptor', {
@@ -24,8 +24,8 @@ async function main() {
     },
   })
   //force deploy new because it needs update
-  // let actualNFTdescriptor = await NFTDescriptor.deploy()
-  let actualNFTdescriptor = await NFTDescriptor.attach(nftdescriptor)
+  let actualNFTdescriptor = await NFTDescriptor.deploy()
+  await actualNFTdescriptor.deployed()
   console.log('NFTdescriptor deployed at', actualNFTdescriptor.address)
 
   const PosDescriptor = await ethers.getContractFactory('NonfungibleTokenPositionDescriptor', {
@@ -34,14 +34,13 @@ async function main() {
     },
   })
 
-  // const posDescriptor = await PosDescriptor.deploy(WNATIVE, nativeCurrencyLabelBytes, { gasPrice: '200000000000' })
-  // await posDescriptor.deployed()
-  const posDescriptor = await PosDescriptor.attach('0xb29D70ee4ABE404430E16deb7534d98762302682')
+  const posDescriptor = await PosDescriptor.deploy(WNATIVE, nativeCurrencyLabelBytes)
+  await posDescriptor.deployed()
   console.log('Descriptor deployed at: ', posDescriptor.address)
 
   const TransparentUpgradeableProxy = await ethers.getContractFactory('TransparentUpgradeableProxy')
   const proxy = await TransparentUpgradeableProxy.attach(posDescriptorProxy)
-  await proxy.upgradeTo(posDescriptor.address, { gasPrice: '200000000000' })
+  await proxy.upgradeTo(posDescriptor.address)
   console.log('done')
 }
 

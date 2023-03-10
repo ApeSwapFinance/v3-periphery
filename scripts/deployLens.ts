@@ -12,16 +12,19 @@ async function main() {
 
   const QuoterV2 = await ethers.getContractFactory('QuoterV2')
   const quoter = await QuoterV2.deploy(factory, WNATIVE)
+  await quoter.deployed()
   console.log('Quoter:', quoter.address)
   console.log('npx hardhat verify --network', hre.network.name, quoter.address, factory, WNATIVE)
 
   const TickLens = await ethers.getContractFactory('TickLens')
   const ticklens = await TickLens.deploy()
+  await ticklens.deployed()
   console.log('TickLens:', ticklens.address)
   console.log('npx hardhat verify --network', hre.network.name, ticklens.address)
 
   const UniswapInterfaceMulticall = await ethers.getContractFactory('UniswapInterfaceMulticall')
   const uim = await UniswapInterfaceMulticall.deploy()
+  await uim.deployed()
   console.log('UniswapInterfaceMulticall:', uim.address)
   console.log('npx hardhat verify --network', hre.network.name, uim.address)
 }

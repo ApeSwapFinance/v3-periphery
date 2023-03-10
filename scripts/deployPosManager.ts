@@ -16,6 +16,7 @@ async function main() {
   let actualNFTSVG
   if (nftSVG == '' || nftSVG == '0x') {
     actualNFTSVG = await NFTSVG.deploy()
+    await actualNFTSVG.deployed()
   } else {
     actualNFTSVG = await NFTSVG.attach(nftSVG + '')
   }
@@ -30,6 +31,7 @@ async function main() {
   let actualNFTdescriptor
   if (nftdescriptor == '' || nftdescriptor == '0x') {
     actualNFTdescriptor = await NFTDescriptor.deploy()
+    await actualNFTdescriptor.deployed()
   } else {
     actualNFTdescriptor = await NFTDescriptor.attach(nftdescriptor + '')
   }
@@ -61,6 +63,7 @@ async function main() {
 
   const PosManager = await ethers.getContractFactory('NonfungiblePositionManager')
   const posManager = await PosManager.deploy(factory, WNATIVE, proxy.address)
+  await posManager.deployed()
   console.log('Manager deployed at: ', posManager.address)
   console.log('npx hardhat verify --network', hre.network.name, posManager.address, factory, WNATIVE, proxy.address)
 }
